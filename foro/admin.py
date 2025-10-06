@@ -4,4 +4,3 @@ from .models import Replica
 
 # Register your models here.
 admin.site.register(Noticia)
-admin.site.register(Replica)

@@ -1,47 +1,62 @@
-{%extends 'core/base.html'%}
+{% extends 'core/base.html' %}
+{% load static %}
 
-{%load static%}
-{% block bgr  %}
-{%static 'core/assets/img/post-bg.jpg' %}
-{%endblock%}
+{% block bgr %}
+{% static 'core/assets/img/me.jpg' %}
+{% endblock %}
+
 {% block content %}
 
-{% for n in page_obj %}
-    <h2>{{ n.titulo }}</h2>
-    <p>{{ n.detalle }}</p>
-    {% if n.imagen %}
-        <img src="{{ n.imagen.url }}" alt="{{ n.titulo }}" class="img-fluid">
-    {% endif %}
-{% endfor %}
-
-<!-- Paginación con Bootstrap -->
-<nav aria-label="Page navigation">
-  <ul class="pagination justify-content-center">
-    {% if page_obj.has_previous %}
-      <li class="page-item">
-        <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Anterior</a>
-      </li>
-    {% else %}
-      <li class="page-item disabled"><span class="page-link">Anterior</span></li>
-    {% endif %}
-
-    {% for num in page_obj.paginator.page_range %}
-      {% if page_obj.number == num %}
-        <li class="page-item active"><span class="page-link">{{ num }}</span></li>
-      {% else %}
-        <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
-      {% endif %}
+<div class="container my-5">
+  <div class="row">
+    {% for n in page_obj %}
+      <div class="col-md-4 d-flex justify-content-center">
+        <div class="card mb-4 shadow-sm" style="width: 100%; max-width: 350px;">
+          {% if n.imagen %}
+            <img src="{{ n.imagen.url }}" alt="{{ n.titulo }}" class="card-img-top noticia-img">
+          {% else %}
+            <!-- Imagen por defecto si no hay imagen subida -->
+            <img src="{% static 'core/assets/img/default.jpg' %}" alt="Imagen no disponible" class="card-img-top noticia-img">
+          {% endif %}
+          <div class="card-body text-center">
+            <h2 class="card-title fs-4">{{ n.titulo }}</h2>
+            <p class="card-text">{{ n.detalle }}</p>
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <p class="text-center">No hay noticias disponibles 📰</p>
     {% endfor %}
+  </div>
 
-    {% if page_obj.has_next %}
-      <li class="page-item">
-        <a class="page-link" href="?page={{ page_obj.next_page_number }}">Siguiente</a>
-      </li>
-    {% else %}
-      <li class="page-item disabled"><span class="page-link">Siguiente</span></li>
-    {% endif %}
-  </ul>
-</nav>
+  <!-- Paginación con Bootstrap -->
+  <nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center">
+      {% if page_obj.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+        </li>
+      {% else %}
+        <li class="page-item disabled"><span class="page-link">Anterior</span></li>
+      {% endif %}
 
+      {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+          <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+        {% else %}
+          <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+        {% endif %}
+      {% endfor %}
 
-{%endblock%}
+      {% if page_obj.has_next %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.next_page_number }}">Siguiente</a>
+        </li>
+      {% else %}
+        <li class="page-item disabled"><span class="page-link">Siguiente</span></li>
+      {% endif %}
+    </ul>
+  </nav>
+</div>
+
+{% endblock %}
