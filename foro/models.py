@@ -11,17 +11,6 @@ class Noticia(models.Model):
     def __str__(self):
         return self.titulo
     
-class Replica(models.Model):
-    nombre=models.CharField(max_length=30)
-    detalle=models.TextField()
-    numero=models.SmallIntegerField() # un entero pequeño
-    vof=models.BooleanField()
-    class Meta:
-        verbose_name = "Réplica"
-        verbose_name_plural = "Réplicas"
 
-
-    def __str__(self):
-        return self.nombre
     
 
